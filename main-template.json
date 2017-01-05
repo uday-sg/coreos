@@ -3,8 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {},
     "variables": {
-        "baseUrl":"https://raw.githubusercontent.com/sharonrose/coreos/master",
-        "avsetDeployUrl":"[concat(variables('baseUrl'),'/nested/availability-set.json')]"
+        "baseUrl": "https://raw.githubusercontent.com/sharonrose/coreos/master",
+        "avsetDeployUrl": "[concat(variables('baseUrl'),'/nested/availability-set.json')]",
+        "publicipDeployUrl":"[concat(variables('baseUrl'),'/nested/public-ip.json')]",
+        "storageDeployUrl":"[concat(variables('baseUrl'),'/nested/storage.json')]",
+        "nicwithloadbalncerDeployUrl":"[concat(variables('baseUrl'),'/nic-with-loadbalancer.json')]",
+        "vnetsubnetDeployUrl":"[concat(variables('baseUrl'),'/nested/vnet-subnet.json')]",
+        "vmDeployUrl":"[concat(variables('baseUrl'),'/nested/vm-withavset.json')]"
     },
     "resources": [
         {
@@ -18,64 +23,64 @@
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
-                    "availabilitySetName":{
-                        "value":""
+                    "availabilitySetName": {
+                        "value": ""
                     },
-                    "availabilitySetApiVersion":{
-                        "value":""
+                    "availabilitySetApiVersion": {
+                        "value": ""
                     },
-                    "location":{
-                        "value":""
-                    }                                     
+                    "location": {
+                        "value": ""
+                    }
                 }
             }
         },
-         {
+        {
             "name": "publicipDeploy",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[variables('avsetDeployUrl')]",
+                    "uri": "[variables('publicipDeployUrl')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
-                    "networkApiVersion":{
-                        "value":""
+                    "networkApiVersion": {
+                        "value": ""
                     },
-                    "publicIPAddressName":{
-                        "value":""
+                    "publicIPAddressName": {
+                        "value": ""
                     },
-                    "publicIPdnsPrefix":{
-                        "value":""
-                    }                                     
+                    "publicIPdnsPrefix": {
+                        "value": ""
+                    }
                 }
             }
         },
-         {
+        {
             "name": "storageDeploy",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[variables('avsetDeployUrl')]",
+                    "uri": "[variables('storageDeployUrl')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
-                    "storageAccountName":{
-                        "value":""
+                    "storageAccountName": {
+                        "value": ""
                     },
-                    "storageApiVersion":{
-                        "value":""
+                    "storageApiVersion": {
+                        "value": ""
                     },
-                    "location":{
-                        "value":""
+                    "location": {
+                        "value": ""
                     },
-                    "storageAccountType":{
-                        "value":""
-                    }                             
+                    "storageAccountType": {
+                        "value": ""
+                    }
                 }
             }
         },
@@ -86,28 +91,28 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[variables('avsetDeployUrl')]",
+                    "uri": "[variables('nicwithloadbalncerDeployUrl')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
-                    "networkApiVersion":{
-                        "value":""
+                    "networkApiVersion": {
+                        "value": ""
                     },
-                    "networkInterfaceName":{
-                        "value":""
+                    "networkInterfaceName": {
+                        "value": ""
                     },
-                    "location":{
-                        "value":""
+                    "location": {
+                        "value": ""
                     },
-                    "loadBalancerBkpoolRef":{
-                        "value":""
+                    "loadBalancerBkpoolRef": {
+                        "value": ""
                     },
-                    "loadBalancerInboundNatRef":{
-                        "value":""
+                    "loadBalancerInboundNatRef": {
+                        "value": ""
                     },
-                     "subnetRef": {       
-                         "value":""
-                     }                    
+                    "subnetRef": {
+                        "value": ""
+                    }
                 }
             }
         },
@@ -118,84 +123,84 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[variables('avsetDeployUrl')]",
+                    "uri": "[variables('vnetsubnetDeployUrl')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
-                    "networkApiVersion":{
-                        "value":""
+                    "networkApiVersion": {
+                        "value": ""
                     },
-                    "vnetName":{
-                        "value":""
+                    "vnetName": {
+                        "value": ""
                     },
-                    "location":{
-                        "value":""
+                    "location": {
+                        "value": ""
                     },
-                    "vnetAddressPrefix":{
-                        "value":""
+                    "vnetAddressPrefix": {
+                        "value": ""
                     },
-                    "subnet1Name":{
-                        "value":""
+                    "subnet1Name": {
+                        "value": ""
                     },
-                     "subnet1Prefix": {       
-                         "value":""
-                     }                    
+                    "subnet1Prefix": {
+                        "value": ""
+                    }
                 }
             }
         },
-         {
+        {
             "name": "vmDeploy",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[variables('avsetDeployUrl')]",
+                    "uri": "[variables('vmDeployUrl')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
-                    "computeApiVersion":{
-                        "value":""
+                    "computeApiVersion": {
+                        "value": ""
                     },
-                    "vmName":{
-                        "value":""
+                    "vmName": {
+                        "value": ""
                     },
-                    "location":{
-                        "value":""
+                    "location": {
+                        "value": ""
                     },
-                    "vmSize":{
-                        "value":""
+                    "vmSize": {
+                        "value": ""
                     },
-                    "adminUsername":{
-                        "value":""
+                    "adminUsername": {
+                        "value": ""
                     },
-                     "adminPassword": {       
-                         "value":""
-                     },
-                      "imagePublisher":{
-                        "value":""
+                    "adminPassword": {
+                        "value": ""
                     },
-                    "imageOffer":{
-                        "value":""
+                    "imagePublisher": {
+                        "value": ""
                     },
-                    "imageSKU":{
-                        "value":""
+                    "imageOffer": {
+                        "value": ""
                     },
-                    "imageVersion":{
-                        "value":""
+                    "imageSKU": {
+                        "value": ""
                     },
-                    "storageAccountName":{
-                        "value":""
+                    "imageVersion": {
+                        "value": ""
                     },
-                     "vmStorageAccountContainerName": {       
-                         "value":""
-                     },
-                      "networkInterfaceName":{
-                        "value":""
+                    "storageAccountName": {
+                        "value": ""
                     },
-                     "availabilitySetName": {       
-                         "value":""
-                     }                       
+                    "vmStorageAccountContainerName": {
+                        "value": ""
+                    },
+                    "networkInterfaceName": {
+                        "value": ""
+                    },
+                    "availabilitySetName": {
+                        "value": ""
+                    }
                 }
             }
         }

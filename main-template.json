@@ -78,8 +78,71 @@
                     }                             
                 }
             }
+        },
+        {
+            "name": "nicwithloadbalncerDeploy",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2016-02-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('avsetDeployUrl')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "networkApiVersion":{
+                        "value":""
+                    },
+                    "networkInterfaceName":{
+                        "value":""
+                    },
+                    "location":{
+                        "value":""
+                    },
+                    "loadBalancerBkpoolRef":{
+                        "value":""
+                    },
+                    "loadBalancerInboundNatRef":{
+                        "value":""
+                    },
+                     "subnetRef": {       
+                         "value":""
+                     }                    
+                }
+            }
+        },
+        {
+            "name": "vnetsubnetDeploy",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2016-02-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('avsetDeployUrl')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "networkApiVersion":{
+                        "value":""
+                    },
+                    "vnetName":{
+                        "value":""
+                    },
+                    "location":{
+                        "value":""
+                    },
+                    "vnetAddressPrefix":{
+                        "value":""
+                    },
+                    "subnet1Name":{
+                        "value":""
+                    },
+                     "subnet1Prefix": {       
+                         "value":""
+                     }                    
+                }
+            }
         }
-
     ],
     "outputs": {}
 }

@@ -1,23 +1,87 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {},
+    "parameters": {
+        "adminUsername": {
+            "type": "string",
+            "defaultValue": "coreuser"
+        },
+        "adminPassword": {
+            "type": "string",
+            "defaultValue": "TestDriveUser123"
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "westus",
+            "allowedValues": [
+                "Brazil South",
+                "brazilsouth",
+                "East Asia",
+                "eastasia",
+                "East US",
+                "eastus",
+                "Japan East",
+                "japaneast",
+                "Japan West",
+                "japanwest",
+                "North Central US",
+                "northcentralus",
+                "North Europe",
+                "northeurope",
+                "South Central US",
+                "southcentralus",
+                "West Europe",
+                "westeurope",
+                "West US",
+                "westus",
+                "Southeast Asia",
+                "southeastasia",
+                "Central US",
+                "centralus",
+                "East US 2",
+                "eastus2"
+            ],
+            "metadata": {
+                "description": "Deployment Location Hint: Use lowercase for creating ipaddress"
+            }
+        },
+        "nodeCount": {
+            "type": "int",
+            "defaultValue": 3
+        }
+    },
     "variables": {
-        "suffix":"[substring(uniqueString(resourceGroup().id), 0, 5)]",
-        "clusterPrefix":"coreos",
-        "avsetName":"[concat(variables('clusterPrefix'),'-avset')]",
-        "pipName":"[concat(variables('clusterPrefix'),'-pip')]",
-        "storageAccName":"[concat(variables('clusterPrefix'),'sa',variables('suffix'))]",
-        "vnetName":"[concat(variables('clusterPrefix'),'-vnet')]",
-        "nicName":"[concat(variables('clusterPrefix'),'-nic')]",
+        "suffix": "[substring(uniqueString(resourceGroup().id), 0, 5)]",
+        "clusterPrefix": "coreos",
+        "computeApiVersion": "2016-03-30",
+        "networkApiVersion": "2016-06-01",
+        "StorageApiVersion": "2016-01-01",
+        "publicIPdnsPrefix": "[concat(variables('clusterPrefix'),'dns',variables('suffix'))]",
+        "avsetName": "[concat(variables('clusterPrefix'),'-avset')]",
+        "pipName": "[concat(variables('clusterPrefix'),'-pip')]",
+        "nicName": "[concat(variables('clusterPrefix'),'-nic')]",
+        "lbName": "[concat(variables('clusterPrefix'),'-lb')]",
+        "storageAccName": "[concat(variables('clusterPrefix'),'sa',variables('suffix'))]",
+        "vmName": "[concat(variables('clusterPrefix'),'-vm')]",
+        "vmStorageAccountContainerName": "[concat(variables('clusterPrefix'),'cont',variables('suffix'))]",
+        "storageAccountType": "Standard_LRS",
+        "vnetName": "[concat(variables('clusterPrefix'),'-vnet')]",
+        "vnetAddressPrefix": "10.7.0.0/16",
+        "subnet1Name": "subnet1",
+        "subnet1Prefix": "10.7.0.0/24",
+        "vmSize": "",
+        "imagePublisher": "",
+        "imageOffer": "",
+        "imageSKU": "",
+        "imageVersion": "",
         "baseUrl": "https://raw.githubusercontent.com/sharonrose/coreos/master",
         "avsetDeployUrl": "[concat(variables('baseUrl'),'/nested/availability-set.json')]",
-        "publicipDeployUrl":"[concat(variables('baseUrl'),'/nested/public-ip.json')]",
-        "storageDeployUrl":"[concat(variables('baseUrl'),'/nested/storage.json')]",
-        "nicwithloadbalncerDeployUrl":"[concat(variables('baseUrl'),'/nic-with-loadbalancer.json')]",
-        "vnetsubnetDeployUrl":"[concat(variables('baseUrl'),'/nested/vnet-subnet.json')]",
-        "vmDeployUrl":"[concat(variables('baseUrl'),'/nested/vm-withavset.json')]",
-        "lbDeployUrl":"[concat(variables('baseUrl'),'/nested/loadbalancer.json')]"
+        "publicipDeployUrl": "[concat(variables('baseUrl'),'/nested/public-ip.json')]",
+        "storageDeployUrl": "[concat(variables('baseUrl'),'/nested/storage.json')]",
+        "nicwithloadbalncerDeployUrl": "[concat(variables('baseUrl'),'/nic-with-loadbalancer.json')]",
+        "vnetsubnetDeployUrl": "[concat(variables('baseUrl'),'/nested/vnet-subnet.json')]",
+        "vmDeployUrl": "[concat(variables('baseUrl'),'/nested/vm-withavset.json')]",
+        "lbDeployUrl": "[concat(variables('baseUrl'),'/nested/loadbalancer.json')]"
     },
     "resources": [
         {
@@ -32,13 +96,13 @@
                 },
                 "parameters": {
                     "availabilitySetName": {
-                        "value": ""
+                        "value": "[variables('avsetName')]"
                     },
                     "availabilitySetApiVersion": {
-                        "value": ""
+                        "value": "[variables('computeApiVersion')]"
                     },
                     "location": {
-                        "value": ""
+                        "value": "[parameters('location')]"
                     }
                 }
             }
@@ -55,13 +119,13 @@
                 },
                 "parameters": {
                     "networkApiVersion": {
-                        "value": ""
+                        "value": "[variables('networkApiVersion')]"
                     },
                     "publicIPAddressName": {
-                        "value": ""
+                        "value": "[variables('pipName')]"
                     },
                     "publicIPdnsPrefix": {
-                        "value": ""
+                        "value": "[variables('publicIPdnsPrefix')]"
                     }
                 }
             }
@@ -78,16 +142,16 @@
                 },
                 "parameters": {
                     "storageAccountName": {
-                        "value": ""
+                        "value": "[variables('storageAccName')]"
                     },
                     "storageApiVersion": {
-                        "value": ""
+                        "value": "[variables('StorageApiVersion')]"
                     },
                     "location": {
-                        "value": ""
+                        "value": "[parameters('location')]"
                     },
                     "storageAccountType": {
-                        "value": ""
+                        "value": "[variables('storageAccountType')]"
                     }
                 }
             }
@@ -104,22 +168,22 @@
                 },
                 "parameters": {
                     "networkApiVersion": {
-                        "value": ""
+                        "value": "[variables('networkApiVersion')]"
                     },
                     "vnetName": {
-                        "value": ""
+                        "value": "[variables('vnetName')]"
                     },
                     "location": {
-                        "value": ""
+                        "value": "[parameters('location')]"
                     },
                     "vnetAddressPrefix": {
-                        "value": ""
+                        "value": "[variables('vnetAddressPrefix')]"
                     },
                     "subnet1Name": {
-                        "value": ""
+                        "value": "[variables('subnet1Name')]"
                     },
                     "subnet1Prefix": {
-                        "value": ""
+                        "value": "[variables('subnet1Prefix')]"
                     }
                 }
             }
@@ -139,19 +203,19 @@
                 },
                 "parameters": {
                     "loadBalancerName": {
-                        "value": ""
+                        "value": "[variables('lbName')]"
                     },
                     "loadBalancersApiVersion": {
-                        "value": ""
+                        "value": "[variables('networkApiVersion')]"
                     },
                     "location": {
-                        "value": ""
+                        "value": "[parameters('location')]"
                     },
                     "publicIPAddressName": {
-                        "value": ""
+                        "value": "[variables('pipName')]"
                     },
                     "nodeCount": {
-                        "value": ""
+                        "value": "[parameters('nodeCount')]"
                     }
                 }
             }
@@ -172,13 +236,13 @@
                 },
                 "parameters": {
                     "networkApiVersion": {
-                        "value": ""
+                        "value": "[variables('networkApiVersion')]"
                     },
                     "networkInterfaceName": {
-                        "value": ""
+                        "value": "[variables('nicName')]"
                     },
                     "location": {
-                        "value": ""
+                        "value": "[parameters('location')]"
                     },
                     "loadBalancerBkpoolRef": {
                         "value": ""
@@ -192,7 +256,6 @@
                 }
             }
         },
-        
         {
             "name": "vmDeploy",
             "type": "Microsoft.Resources/deployments",
@@ -209,51 +272,50 @@
                 },
                 "parameters": {
                     "computeApiVersion": {
-                        "value": ""
+                        "value": "[variables('computeApiVersion')]"
                     },
                     "vmName": {
-                        "value": ""
+                        "value": "[variables('vmName')]"
                     },
                     "location": {
-                        "value": ""
+                        "value": "[parameters('location')]"
                     },
                     "vmSize": {
-                        "value": ""
+                        "value": "[variables('vmSize')]"
                     },
                     "adminUsername": {
-                        "value": ""
+                        "value": "[parameters('adminUsername')]"
                     },
                     "adminPassword": {
-                        "value": ""
+                        "value": "[parameters('adminPassword')]"
                     },
                     "imagePublisher": {
-                        "value": ""
+                        "value": "[variables('imagePublisher')]"
                     },
                     "imageOffer": {
-                        "value": ""
+                        "value": "[variables('imageOffer')]"
                     },
                     "imageSKU": {
-                        "value": ""
+                        "value": "[variables('imageSKU')]"
                     },
                     "imageVersion": {
-                        "value": ""
+                        "value": "[variables('imageVersion')]"
                     },
                     "storageAccountName": {
-                        "value": ""
+                        "value": "[variables('storageAccName')]"
                     },
                     "vmStorageAccountContainerName": {
-                        "value": ""
+                        "value": "[variables('vmStorageAccountContainerName')]"
                     },
                     "networkInterfaceName": {
-                        "value": ""
+                        "value": "[variables('nicName')]"
                     },
                     "availabilitySetName": {
-                        "value": ""
+                        "value": "[variables('avsetName')]"
                     }
                 }
             }
         }
-         
     ],
     "outputs": {}
 }

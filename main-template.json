@@ -67,16 +67,20 @@
         "storageAccountType": "Standard_LRS",
         "vnetName": "[concat(variables('clusterPrefix'),'-vnet')]",
         "networkSecurityGroupName":"[concat(variables('clusterPrefix'),'-nsg')]",
-        
+        "loadBalancerInboundNatRef": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('lbName')),'/inboundNatRules/RDP-VM')]",
+        "subnetRef": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vnetName')),'/subnets/',variables('subnet1Name'))]",
+        "loadBalancerBkpoolRef": "[concat(resourceId('Microsoft.Network/loadBalancers', variables('lbName')),'/backendAddressPools/LBBAP')]",
 
         "vnetAddressPrefix": "10.7.0.0/16",
         "subnet1Name": "subnet1",
         "subnet1Prefix": "10.7.0.0/24",
-        "vmSize": "",
-        "imagePublisher": "",
-        "imageOffer": "",
-        "imageSKU": "",
-        "imageVersion": "",
+
+        "vmSize": "Standard_D1_v2",
+        "imagePublisher": "CoreOS",
+        "imageOffer": "CoreOS",
+        "imageSKU": "Stable",
+        "imageVersion": "latest",
+
         "baseUrl": "https://raw.githubusercontent.com/sharonrose/coreos/master",
         "avsetDeployUrl": "[concat(variables('baseUrl'),'/nested/availability-set.json')]",
         "publicipDeployUrl": "[concat(variables('baseUrl'),'/nested/public-ip.json')]",

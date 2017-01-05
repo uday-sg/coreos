@@ -1,0 +1,85 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "variables": {
+        "baseUrl":"https://raw.githubusercontent.com/sharonrose/coreos/master",
+        "avsetDeployUrl":"[concat(variables('baseUrl'),'/nested/availability-set.json')]"
+    },
+    "resources": [
+        {
+            "name": "avsetDeploy",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2016-02-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('avsetDeployUrl')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "availabilitySetName":{
+                        "value":""
+                    },
+                    "availabilitySetApiVersion":{
+                        "value":""
+                    },
+                    "location":{
+                        "value":""
+                    }                                     
+                }
+            }
+        },
+         {
+            "name": "publicipDeploy",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2016-02-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('avsetDeployUrl')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "networkApiVersion":{
+                        "value":""
+                    },
+                    "publicIPAddressName":{
+                        "value":""
+                    },
+                    "publicIPdnsPrefix":{
+                        "value":""
+                    }                                     
+                }
+            }
+        },
+         {
+            "name": "storageDeploy",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2016-02-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('avsetDeployUrl')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "storageAccountName":{
+                        "value":""
+                    },
+                    "storageApiVersion":{
+                        "value":""
+                    },
+                    "location":{
+                        "value":""
+                    },
+                    "storageAccountType":{
+                        "value":""
+                    }                             
+                }
+            }
+        }
+
+    ],
+    "outputs": {}
+}

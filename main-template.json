@@ -7,7 +7,7 @@
             "defaultValue": "coreuser"
         },
         "adminPassword": {
-            "type": "string",
+            "type": "securestring",
             "defaultValue": "TestDriveUser123"
         },
         "location": {

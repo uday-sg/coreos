@@ -53,9 +53,11 @@
     "variables": {
         "suffix": "[substring(uniqueString(resourceGroup().id), 0, 5)]",
         "clusterPrefix": "coreos",
+
         "computeApiVersion": "2016-03-30",
         "networkApiVersion": "2016-06-01",
-        "StorageApiVersion": "2016-01-01",
+        "StorageApiVersion": "2015-06-15",
+
         "publicIPdnsPrefix": "[concat(variables('clusterPrefix'),'dns',variables('suffix'))]",
         "avsetName": "[concat(variables('clusterPrefix'),'-avset')]",
         "pipName": "[concat(variables('clusterPrefix'),'-pip')]",
@@ -85,7 +87,7 @@
         "avsetDeployUrl": "[concat(variables('baseUrl'),'/nested/availability-set.json')]",
         "publicipDeployUrl": "[concat(variables('baseUrl'),'/nested/public-ip.json')]",
         "storageDeployUrl": "[concat(variables('baseUrl'),'/nested/storage.json')]",
-        "nicwithloadbalncerDeployUrl": "[concat(variables('baseUrl'),'/nic-with-loadbalancer.json')]",
+        "nicwithloadbalncerDeployUrl": "[concat(variables('baseUrl'),'/nested/nic-with-loadbalancer.json')]",
         "vnetsubnetDeployUrl": "[concat(variables('baseUrl'),'/nested/vnet-subnet.json')]",
         "vmDeployUrl": "[concat(variables('baseUrl'),'/nested/vm-withavset.json')]",
         "lbDeployUrl": "[concat(variables('baseUrl'),'/nested/loadbalancer.json')]",

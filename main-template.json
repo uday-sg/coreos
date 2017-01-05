@@ -142,6 +142,62 @@
                      }                    
                 }
             }
+        },
+         {
+            "name": "vmDeploy",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2016-02-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('avsetDeployUrl')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "computeApiVersion":{
+                        "value":""
+                    },
+                    "vmName":{
+                        "value":""
+                    },
+                    "location":{
+                        "value":""
+                    },
+                    "vmSize":{
+                        "value":""
+                    },
+                    "adminUsername":{
+                        "value":""
+                    },
+                     "adminPassword": {       
+                         "value":""
+                     },
+                      "imagePublisher":{
+                        "value":""
+                    },
+                    "imageOffer":{
+                        "value":""
+                    },
+                    "imageSKU":{
+                        "value":""
+                    },
+                    "imageVersion":{
+                        "value":""
+                    },
+                    "storageAccountName":{
+                        "value":""
+                    },
+                     "vmStorageAccountContainerName": {       
+                         "value":""
+                     },
+                      "networkInterfaceName":{
+                        "value":""
+                    },
+                     "availabilitySetName": {       
+                         "value":""
+                     }                       
+                }
+            }
         }
     ],
     "outputs": {}

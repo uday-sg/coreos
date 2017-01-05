@@ -55,7 +55,7 @@
             "type": "object",
             "defaultValue": {
                 "key1": "networksecurity",
-                "value1": "MariaDB"
+                "value1": "coreos"
             },
             "metadata": {
                 "description": "Tag Values"

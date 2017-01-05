@@ -66,6 +66,9 @@
         "vmStorageAccountContainerName": "[concat(variables('clusterPrefix'),'cont',variables('suffix'))]",
         "storageAccountType": "Standard_LRS",
         "vnetName": "[concat(variables('clusterPrefix'),'-vnet')]",
+        "networkSecurityGroupName":"[concat(variables('clusterPrefix'),'-nsg')]",
+        
+
         "vnetAddressPrefix": "10.7.0.0/16",
         "subnet1Name": "subnet1",
         "subnet1Prefix": "10.7.0.0/24",
@@ -81,7 +84,8 @@
         "nicwithloadbalncerDeployUrl": "[concat(variables('baseUrl'),'/nic-with-loadbalancer.json')]",
         "vnetsubnetDeployUrl": "[concat(variables('baseUrl'),'/nested/vnet-subnet.json')]",
         "vmDeployUrl": "[concat(variables('baseUrl'),'/nested/vm-withavset.json')]",
-        "lbDeployUrl": "[concat(variables('baseUrl'),'/nested/loadbalancer.json')]"
+        "lbDeployUrl": "[concat(variables('baseUrl'),'/nested/loadbalancer.json')]",
+        "networkSecurityGroupUrl":"[concat(variables('baseUrl'),'/nested/nsg.json')]"
     },
     "resources": [
         {
@@ -188,6 +192,29 @@
                 }
             }
         },
+             {
+            "apiVersion": "2016-02-01",
+            "name": "networkSecurityGroupDeploy",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('networkSecurityGroupUrl')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "networkApiVersion": {
+                        "value": "[variables('networkApiVersion')]"
+                    },
+                    "networkSecurityGroupName": {
+                        "value": "[variables('networkSecurityGroupName')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    }
+                }
+            }
+},
         {
             "name": "lbDeploy",
             "type": "Microsoft.Resources/deployments",

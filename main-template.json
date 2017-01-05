@@ -9,7 +9,8 @@
         "storageDeployUrl":"[concat(variables('baseUrl'),'/nested/storage.json')]",
         "nicwithloadbalncerDeployUrl":"[concat(variables('baseUrl'),'/nic-with-loadbalancer.json')]",
         "vnetsubnetDeployUrl":"[concat(variables('baseUrl'),'/nested/vnet-subnet.json')]",
-        "vmDeployUrl":"[concat(variables('baseUrl'),'/nested/vm-withavset.json')]"
+        "vmDeployUrl":"[concat(variables('baseUrl'),'/nested/vm-withavset.json')]",
+        "lbDeployUrl":"[concat(variables('baseUrl'),'/nested/loadbalancer.json')]"
     },
     "resources": [
         {
@@ -199,6 +200,35 @@
                         "value": ""
                     },
                     "availabilitySetName": {
+                        "value": ""
+                    }
+                }
+            }
+        },
+         {
+            "name": "lbDeploy",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2016-02-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('lbDeployUrl')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "loadBalancerName": {
+                        "value": ""
+                    },
+                    "loadBalancersApiVersion": {
+                        "value": ""
+                    },
+                    "location": {
+                        "value": ""
+                    },
+                    "publicIPAddressName": {
+                        "value": ""
+                    },
+                    "nodeCount": {
                         "value": ""
                     }
                 }

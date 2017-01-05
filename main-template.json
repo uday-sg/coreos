@@ -200,7 +200,7 @@
             "dependsOn": [
                 "storageDeploy",
                 "nicwithloadbalncerDeploy"
-            ]
+            ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {

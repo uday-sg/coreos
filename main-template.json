@@ -221,13 +221,17 @@
             }
         },
         {
-            "name": "nicwithloadbalncerDeploy",
+            "name": "[concat('nicwithloadbalncerDeploy',copyIndex())]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
             "dependsOn": [
                 "vnetsubnetDeploy",
                 "lbDeploy"
             ],
+            "copy":{
+                "name":"nicloop",
+                "count":"[parameters('nodeCount')]"
+            },
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -239,31 +243,35 @@
                         "value": "[variables('networkApiVersion')]"
                     },
                     "networkInterfaceName": {
-                        "value": "[variables('nicName')]"
+                        "value": "[concat(variables('nicName'),copyIndex())]"
                     },
                     "location": {
                         "value": "[parameters('location')]"
                     },
                     "loadBalancerBkpoolRef": {
-                        "value": ""
+                        "value": "[variables('loadBalancerBkpoolRef')]"
                     },
                     "loadBalancerInboundNatRef": {
-                        "value": ""
+                        "value": "[concat(variables('loadBalancerInboundNatRef'),copyIndex())]"
                     },
                     "subnetRef": {
-                        "value": ""
+                        "value": "[variables('subnetRef')]"
                     }
                 }
             }
         },
         {
-            "name": "vmDeploy",
+            "name": "[concat('vmDeploy',copyIndex())]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
             "dependsOn": [
                 "storageDeploy",
-                "nicwithloadbalncerDeploy"
+                "[concat('nicwithloadbalncerDeploy',copyIndex())]"
             ],
+            "copy":{
+                "name":"vmloop",
+                "count":"[parameters('nodeCount')]"
+            },
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -275,7 +283,7 @@
                         "value": "[variables('computeApiVersion')]"
                     },
                     "vmName": {
-                        "value": "[variables('vmName')]"
+                        "value": "[concat(variables('vmName'),copyIndex())]"
                     },
                     "location": {
                         "value": "[parameters('location')]"
@@ -308,7 +316,7 @@
                         "value": "[variables('vmStorageAccountContainerName')]"
                     },
                     "networkInterfaceName": {
-                        "value": "[variables('nicName')]"
+                        "value": "[concat(variables('nicName'),copyIndex())]"
                     },
                     "availabilitySetName": {
                         "value": "[variables('avsetName')]"

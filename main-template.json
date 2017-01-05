@@ -3,6 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {},
     "variables": {
+        "suffix":"[substring(uniqueString(resourceGroup().id), 0, 5)]",
+        "clusterPrefix":"coreos",
+        "avsetName":"[concat(variables('clusterPrefix'),'-avset')]",
+        "pipName":"[concat(variables('clusterPrefix'),'-pip')]",
+        "storageAccName":"[concat(variables('clusterPrefix'),'sa',variables('suffix'))]",
+        "vnetName":"[concat(variables('clusterPrefix'),'-vnet')]",
+        "nicName":"[concat(variables('clusterPrefix'),'-nic')]",
         "baseUrl": "https://raw.githubusercontent.com/sharonrose/coreos/master",
         "avsetDeployUrl": "[concat(variables('baseUrl'),'/nested/availability-set.json')]",
         "publicipDeployUrl":"[concat(variables('baseUrl'),'/nested/public-ip.json')]",
@@ -86,38 +93,6 @@
             }
         },
         {
-            "name": "nicwithloadbalncerDeploy",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2016-02-01",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "[variables('nicwithloadbalncerDeployUrl')]",
-                    "contentVersion": "1.0.0.0"
-                },
-                "parameters": {
-                    "networkApiVersion": {
-                        "value": ""
-                    },
-                    "networkInterfaceName": {
-                        "value": ""
-                    },
-                    "location": {
-                        "value": ""
-                    },
-                    "loadBalancerBkpoolRef": {
-                        "value": ""
-                    },
-                    "loadBalancerInboundNatRef": {
-                        "value": ""
-                    },
-                    "subnetRef": {
-                        "value": ""
-                    }
-                }
-            }
-        },
-        {
             "name": "vnetsubnetDeploy",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
@@ -150,9 +125,82 @@
             }
         },
         {
+            "name": "lbDeploy",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2016-02-01",
+            "dependsOn": [
+                "publicipDeploy"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('lbDeployUrl')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "loadBalancerName": {
+                        "value": ""
+                    },
+                    "loadBalancersApiVersion": {
+                        "value": ""
+                    },
+                    "location": {
+                        "value": ""
+                    },
+                    "publicIPAddressName": {
+                        "value": ""
+                    },
+                    "nodeCount": {
+                        "value": ""
+                    }
+                }
+            }
+        },
+        {
+            "name": "nicwithloadbalncerDeploy",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2016-02-01",
+            "dependsOn": [
+                "vnetsubnetDeploy",
+                "lbDeploy"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[variables('nicwithloadbalncerDeployUrl')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "networkApiVersion": {
+                        "value": ""
+                    },
+                    "networkInterfaceName": {
+                        "value": ""
+                    },
+                    "location": {
+                        "value": ""
+                    },
+                    "loadBalancerBkpoolRef": {
+                        "value": ""
+                    },
+                    "loadBalancerInboundNatRef": {
+                        "value": ""
+                    },
+                    "subnetRef": {
+                        "value": ""
+                    }
+                }
+            }
+        },
+        
+        {
             "name": "vmDeploy",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2016-02-01",
+            "dependsOn": [
+                "storageDeploy",
+                "nicwithloadbalncerDeploy"
+            ]
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -204,36 +252,8 @@
                     }
                 }
             }
-        },
-         {
-            "name": "lbDeploy",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2016-02-01",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "[variables('lbDeployUrl')]",
-                    "contentVersion": "1.0.0.0"
-                },
-                "parameters": {
-                    "loadBalancerName": {
-                        "value": ""
-                    },
-                    "loadBalancersApiVersion": {
-                        "value": ""
-                    },
-                    "location": {
-                        "value": ""
-                    },
-                    "publicIPAddressName": {
-                        "value": ""
-                    },
-                    "nodeCount": {
-                        "value": ""
-                    }
-                }
-            }
         }
+         
     ],
     "outputs": {}
 }
